@@ -2,16 +2,23 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController
+class HomeController extends AbstractController
 {
     /**
      * @Route("/")
      */
     public function homepage()
     {
-        return new Response('This is home page');
+        return $this->render('home/homepage.html.twig', [
+            'top_movies' => array(
+                'Фильм 1',
+                'Фильм 2',
+                'Фильм 3',
+                'Фильм 4',
+            )
+        ]);
     }
 }

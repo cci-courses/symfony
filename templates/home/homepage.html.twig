@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Демо
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the Movie Critic</h1>
+    <p>Coming soon</p>
+
+    <p><strong>{{ top_movies|length }}</strong></p>
+    <ul>
+        {% for key,movie in top_movies %}
+            <li>{{ movie }} ({{ key }})</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
