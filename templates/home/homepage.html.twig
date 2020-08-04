@@ -1,18 +1,25 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}
-    Демо
+    Добро пожаловать
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to the Movie Critic</h1>
-    <p>Coming soon</p>
-
-    <p><strong>{{ top_movies|length }}</strong></p>
-    <ul>
-        {% for key,movie in top_movies %}
-            <li>{{ movie }} ({{ key }})</li>
+    <h1 align="center" class="mt-3">Добро пожаловать</h1>
+    <div class="row">
+        {% for movie in topMovies %}
+            <div class="col-6 col-md-4">
+                <div class="card">
+                    <img src="{{ asset(movie.image) }}" class="card-img-top" alt="{{ movie.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.name }}</h5>
+                        <p class="card-text">{{ (movie.description|length >= 75
+                            ? movie.description|slice(0, 75)~'...'
+                            : movie.description)|raw }}</p>
+                        <a href="#" class="btn btn-primary">Открыть</a>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
