@@ -2,18 +2,31 @@
 
 namespace App\Controller;
 
-use Parsedown;
+use App\Entity\Movie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/")
      */
-    public function homepage(CacheInterface $cache)
+    public function homepage()
     {
+        $repository = $this->getDoctrine()->getRepository(Movie::class);
+
+        return $this->render('home/homepage.html.twig', [
+            'topMovies' => $repository->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/test")
+     */
+    public function createTestData()
+    {
+        $em = $this->getDoctrine()->getManager();
+
         $topMovies = array(
             [
                 'name' => 'Побег из Шоушенка',
@@ -33,17 +46,15 @@ class HomeController extends AbstractController
             ],
         );
 
-        $cacheKey = md5(serialize($topMovies));
+        foreach ($topMovies as $movieData) {
+            $movie = new Movie();
+            $movie->setTitle($movieData['name'])
+                ->setDescription($movieData['description'])
+                ->setImage($movieData['image']);
 
-        $topMovies = $cache->get($cacheKey, function () use (&$topMovies) {
-            $markdownService = new Parsedown();
-            foreach ($topMovies as &$movie) {
-                $movie['description'] = $markdownService->text($movie['description']);
-            }
-        });
-
-        return $this->render('home/homepage.html.twig', [
-            'topMovies' => $topMovies
-        ]);
+            $em->persist($movie);
+        }
+        $em->flush();
+        return $this->json(['status' => 'ok']);
     }
 }

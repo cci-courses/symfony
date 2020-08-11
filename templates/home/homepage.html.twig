@@ -10,9 +10,9 @@
         {% for movie in topMovies %}
             <div class="col-6 col-md-4">
                 <div class="card">
-                    <img src="{{ asset(movie.image) }}" class="card-img-top" alt="{{ movie.name }}">
+                    <img src="{{ asset(movie.image) }}" class="card-img-top" alt="{{ movie.title }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ movie.name }}</h5>
+                        <h5 class="card-title">{{ movie.title }}</h5>
                         <p class="card-text">{{ (movie.description|length >= 75
                             ? movie.description|slice(0, 75)~'...'
                             : movie.description)|raw }}</p>
